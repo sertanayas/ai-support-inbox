@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+support_inbox.db
+.env
+.venv/
+venv/

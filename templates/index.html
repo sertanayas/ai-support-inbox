@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ ui.title }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="page-shell">
+        <div class="top-bar">
+            <div>
+                <h1>{{ ui.title }}</h1>
+                <p class="subtitle">{{ ui.subtitle }}</p>
+            </div>
+
+            <div class="lang-switch">
+                <a href="/?lang=en" class="{% if lang == 'en' %}active{% endif %}">EN</a>
+                <a href="/?lang=tr" class="{% if lang == 'tr' %}active{% endif %}">TR</a>
+            </div>
+        </div>
+
+        {% if success == "1" %}
+        <div class="success-alert">
+            {{ ui.success_message }}
+        </div>
+        {% endif %}
+
+        <div class="grid-layout">
+            <div class="form-card">
+                <div class="card-header">
+                    <h2>{{ ui.title }}</h2>
+                    <span class="badge">V1</span>
+                </div>
+
+                <form action="/analyze" method="post">
+                    <label>{{ ui.customer_name }}</label>
+                    <input type="text" name="customer_name" placeholder="{{ ui.customer_name_placeholder }}" required>
+
+                    <label>{{ ui.customer_message }}</label>
+                    <textarea name="message" rows="7" placeholder="{{ ui.customer_message_placeholder }}" required></textarea>
+
+                    <label>{{ ui.language }}</label>
+                    <select name="language" required>
+                        <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
+                        <option value="tr" {% if lang == 'tr' %}selected{% endif %}>Türkçe</option>
+                    </select>
+
+                    <button type="submit">{{ ui.analyze_button }}</button>
+                </form>
+            </div>
+
+            <div class="info-card">
+                <h3>Project Highlights</h3>
+                <ul>
+                    <li>FastAPI backend</li>
+                    <li>SQLite storage</li>
+                    <li>Support message analysis</li>
+                    <li>Bilingual response generation</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <div class="filter-header">
+                <h3>{{ ui.filters }}</h3>
+                <div class="filter-actions">
+                    <a href="/?lang={{ lang }}" class="clear-filters-link">{{ ui.clear_filters }}</a>
+
+                    <form action="/delete-all?lang={{ lang }}" method="post">
+                        <button type="submit" class="delete-all-button">{{ ui.delete_all }}</button>
+                    </form>
+                </div>
+            </div>
+
+            <form action="/" method="get" class="filters-form">
+                <input type="hidden" name="lang" value="{{ lang }}">
+
+                <select name="category_filter">
+                    <option value="">{{ ui.all_categories }}</option>
+                    {% for category in all_categories %}
+                    <option value="{{ category }}" {% if category_filter == category %}selected{% endif %}>{{ category }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="priority_filter">
+                    <option value="">{{ ui.all_priorities }}</option>
+                    {% for priority in all_priorities %}
+                    <option value="{{ priority }}" {% if priority_filter == priority %}selected{% endif %}>{{ priority }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="filter-button">Apply Filters</button>
+            </form>
+        </div>
+
+        <div class="messages-section">
+            <div class="section-header">
+                <h2>{{ ui.analyzed_messages }}</h2>
+                <span class="message-count">
+                    {{ messages|length }} {{ ui.records }}
+                </span>
+            </div>
+
+            {% if messages %}
+                {% for item in messages %}
+                <div class="message-card">
+                    <div class="message-top">
+                        <div>
+                            <h3>{{ item.customer_name }}</h3>
+                            <p class="created-at">{{ ui.created_at }}: {{ item.created_at }}</p>
+                        </div>
+
+                        <div class="meta-badges">
+                            <span class="meta-pill category-pill">{{ item.category }}</span>
+                            <span class="meta-pill {{ item.sentiment_class }}">{{ item.sentiment }}</span>
+                            <span class="meta-pill {{ item.priority_class }}">{{ item.priority }}</span>
+                        </div>
+                    </div>
+
+                    <div class="message-block">
+                        <span class="label">{{ ui.message }}</span>
+                        <p>{{ item.message }}</p>
+                    </div>
+
+                    <div class="reply-block">
+                        <span class="label">{{ ui.suggested_reply }}</span>
+                        <p>{{ item.suggested_reply }}</p>
+                    </div>
+
+                    <div class="card-actions">
+                        <form action="/delete/{{ item.id }}?lang={{ lang }}" method="post">
+                            <button type="submit" class="delete-button">{{ ui.delete }}</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <p>{{ ui.no_messages }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
