@@ -3,4 +3,3 @@ uvicorn
 sqlalchemy
 jinja2
 python-multipart
-openai

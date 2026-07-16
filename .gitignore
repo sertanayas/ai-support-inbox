@@ -1,0 +1,25 @@
+# Local environments and secrets
+.venv/
+venv/
+.env
+.env.*
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local application data
+support_inbox.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
