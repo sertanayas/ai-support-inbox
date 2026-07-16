@@ -88,7 +88,17 @@ Each `support_messages` record contains:
 
 ## Screenshots
 
-No screenshots are currently committed to this repository. This section intentionally contains no placeholder or generated images.
+### Message Submission and Filtering Dashboard
+
+Users can submit customer messages, select the response language, and filter stored records by category and priority.
+
+![Message Submission and Filtering Dashboard](screenshots/support-inbox-dashboard.png)
+
+### Rule-Based Analysis Results
+
+The dashboard displays the detected category, sentiment, priority, and template-based suggested response for Turkish and English messages.
+
+![Rule-Based Analysis Results](screenshots/message-analysis.png)
 
 ## Installation and Run Instructions
 
@@ -153,4 +163,4 @@ The SQLite database is created locally as `support_inbox.db` when the applicatio
 
 ## Author
 
-Developed by [Sertan Ayas](https://github.com/sertanayas) as a portfolio prototype focused on backend development and transparent customer-support workflow automation.
+Developed by [Sertan Ayaş](https://github.com/sertanayas) as a portfolio prototype focused on backend development and transparent customer-support workflow automation.
